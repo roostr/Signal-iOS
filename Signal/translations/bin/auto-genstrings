@@ -12,8 +12,9 @@ fi
 # Search directories for .m & .h files and collect string definitions with genstrings
 find $TARGETS -name "*.m" -print0 -name "*.h" -print0 | xargs -0 genstrings -o $TMP
 
-# We have to convert the old and new .strings files to UTF-8 in order to deal with them
-OLDUTF8=$(iconv -f UTF-16 -t UTF-8 $STRINGFILE)
+# We have to convert the new .strings files to UTF-8 in order to deal with them
+# STRINGFILE is already UTF-8.
+OLDUTF8=$(cat $STRINGFILE)
 NEWUTF8=$(iconv -f UTF-16 -t UTF-8 $TMP/Localizable.strings)
 
 # Let's merge the old with the new .strings file:
@@ -29,5 +30,4 @@ echo "$OLDUTF8" | grep -Eo '^".*"' | \
 		{$2 = ($1 in a ? a[$1] : $2); \
 		if($2 ~ /"[;]*$/){$2 = " = "$2}; \
 		if($2 ~ /"$/){$2 = $2";"}; \
-		print}' - <(echo "$NEWUTF8") | \
-	iconv -f UTF-8 -t UTF-16 > $STRINGFILE
+		print}' - <(echo "$NEWUTF8") > $STRINGFILE
