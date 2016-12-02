@@ -36,6 +36,5 @@ typedef void (^ABReloadRequestCompletionBlock)(NSArray *contacts);
 - (BOOL)nameExistsForPhoneIdentifier:(NSString *)identifier;
 - (UIImage * _Nullable)imageForPhoneIdentifier:(NSString *)identifier;
 
-+ (NSComparator)contactComparator;
 
 @end

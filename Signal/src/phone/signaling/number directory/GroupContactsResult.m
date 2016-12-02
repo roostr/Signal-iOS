@@ -87,8 +87,10 @@
     [_knownNumbers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
       Contact *contact1 = [_associatedContactDict objectForKey:obj1];
       Contact *contact2 = [_associatedContactDict objectForKey:obj2];
+      BOOL firstNameOrdering = ABPersonGetSortOrdering() == kABPersonCompositeNameFormatFirstNameFirst ? YES : NO;
+      NSComparator comparator = [Contact comparatorSortingNamesByFirstThenLast:firstNameOrdering];
 
-      return [[manager class] contactComparator](contact1, contact2);
+      return comparator(contact1, contact2);
     }];
 
     return self;
