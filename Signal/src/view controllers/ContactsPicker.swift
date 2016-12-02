@@ -369,9 +369,9 @@ fileprivate extension CNContact {
         get {
             let compositeName: String
             if ContactSortOrder == .familyName {
-                compositeName = "\(self.familyName) \(self.givenName)"
+                compositeName = "\(self.familyName) \(self.givenName) \(self.organizationName)"
             } else {
-                compositeName = "\(self.givenName) \(self.familyName)"
+                compositeName = "\(self.givenName) \(self.familyName) \(self.organizationName)"
             }
             return compositeName.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         }
