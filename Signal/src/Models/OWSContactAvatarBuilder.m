@@ -57,7 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     NSMutableString *initials = [NSMutableString string];
-    BOOL contactHasName = [self.contactsManager nameExistsForPhoneIdentifier:self.signalId];
+    Contact *contact = [self.contactsManager contactForPhoneIdentifier:self.signalId];
+    BOOL contactHasName = (self.contactName.length > 0) && (!contact || !contact.nameGeneratedFromPhoneNumber);
     if (contactHasName) {
         // Make an image from the contact's initials
         NSArray *words =

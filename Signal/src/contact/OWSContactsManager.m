@@ -269,6 +269,8 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     NSString *lastName    = (__bridge_transfer NSString *)ABRecordCopyValue(record, kABPersonLastNameProperty);
     NSArray *phoneNumbers = [self phoneNumbersForRecord:record];
 
+    // TODO: Eliminate this behavior (especially setting the first name to be the phone number),
+    // as it complicates the generation of the initials of a name when making avatars
     if (!firstName && !lastName) {
         NSString *companyName = (__bridge_transfer NSString *)ABRecordCopyValue(record, kABPersonOrganizationProperty);
         if (companyName) {
@@ -409,21 +411,6 @@ void onAddressBookChanged(ABAddressBookRef notifyAddressBook, CFDictionaryRef in
     NSString *displayName = (contact.fullName.length > 0) ? contact.fullName : identifier;
     
     return displayName;
-}
-
-- (BOOL)nameExistsForPhoneIdentifier:(NSString * _Nullable)identifier {
-    Contact *contact = [self contactForPhoneIdentifier:identifier];
-    NSString *name = contact.fullName;
-    
-    if (name.length <= 0) return NO;
-    
-    // OWSContactsManager::contactForRecord will use the first phone number as a name
-    // in absense of a name or business name during import. Make sure that's not happening here.
-    if ((contact.userTextPhoneNumbers.count > 0) && ([contact.userTextPhoneNumbers[0] isEqualToString:name])) {
-        return NO;
-    }
-    
-    return YES;
 }
 
 - (Contact * _Nullable)contactForPhoneIdentifier:(NSString * _Nullable)identifier {
